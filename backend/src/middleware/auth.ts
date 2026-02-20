@@ -17,14 +17,20 @@ declare global {
 
 /**
  * Authentication middleware
- * Verifies JWT token from HTTP-only cookie
+ * Verifies JWT token from Authorization header or HTTP-only cookie
  * Checks if token exists in database
  * Attaches user info to request object
  */
 export const authenticate = async (req: Request, _res: Response, next: NextFunction) => {
   try {
-    // Get token from HTTP-only cookie
-    const token = req.cookies.token;
+    // Get token from Authorization header or HTTP-only cookie
+    let token = req.cookies.token;
+    
+    // Check Authorization header first (for cross-domain requests)
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      token = authHeader.substring(7); // Remove 'Bearer ' prefix
+    }
 
     if (!token) {
       throw new AppError('Authentication required', 401);

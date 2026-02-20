@@ -15,8 +15,8 @@ export default function DashboardPage() {
   const [showCelebration, setShowCelebration] = useState(false);
 
   useEffect(() => {
-    // Get username from sessionStorage
-    const storedUsername = sessionStorage.getItem('username');
+    // Get username from localStorage
+    const storedUsername = localStorage.getItem('username');
     if (storedUsername) {
       setUsername(storedUsername);
     } else {
@@ -42,7 +42,8 @@ export default function DashboardPage() {
       setError(err.message || 'Failed to fetch balance');
       if (err.message.includes('authentication') || err.message.includes('token')) {
         // Redirect to login if authentication fails
-        sessionStorage.removeItem('username');
+        localStorage.removeItem('username');
+        localStorage.removeItem('auth_token');
         router.push('/login');
       }
     } finally {
@@ -53,12 +54,14 @@ export default function DashboardPage() {
   const handleLogout = async () => {
     try {
       await logoutUser();
-      sessionStorage.removeItem('username');
+      localStorage.removeItem('username');
+      localStorage.removeItem('auth_token');
       router.push('/');
     } catch (err) {
       console.error('Logout error:', err);
       // Force logout even if API call fails
-      sessionStorage.removeItem('username');
+      localStorage.removeItem('username');
+      localStorage.removeItem('auth_token');
       router.push('/');
     }
   };

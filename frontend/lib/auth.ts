@@ -14,6 +14,13 @@ export const registerUser = async (data: RegisterFormData) => {
  */
 export const loginUser = async (data: LoginFormData) => {
   const response = await api.post('/api/auth/login', data);
+  
+  // Store token and username in localStorage
+  if (response.data.success && response.data.data.token) {
+    localStorage.setItem('auth_token', response.data.data.token);
+    localStorage.setItem('username', response.data.data.username);
+  }
+  
   return response.data;
 };
 

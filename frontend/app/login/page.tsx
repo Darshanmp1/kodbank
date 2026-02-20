@@ -29,11 +29,9 @@ export default function LoginPage() {
     setError('');
 
     try {
-      const response = await loginUser(data);
+      await loginUser(data);
       
-      // Store username in sessionStorage for dashboard
-      sessionStorage.setItem('username', response.data.username);
-      
+      // Token and username are stored by loginUser function
       // Redirect to dashboard
       router.push('/dashboard');
     } catch (err: any) {
