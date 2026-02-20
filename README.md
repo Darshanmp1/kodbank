@@ -85,6 +85,46 @@ NEXT_PUBLIC_API_URL=http://localhost:5000
 - CORS protection
 - Input validation
 
+## Deployment on Render
+
+### Quick Deploy
+
+1. Fork or push this repo to GitHub
+2. Create a [Render account](https://render.com)
+3. Use the "Blueprint" option and select this repo
+4. Render will automatically detect `render.yaml` and create both services
+
+### Manual Deployment
+
+**Backend:**
+1. New Web Service → Connect your repo
+2. Build Command: `cd backend && npm install && npm run build`
+3. Start Command: `cd backend && npm start`
+4. Add environment variables:
+   - `DATABASE_URL` - Your MySQL connection string
+   - `JWT_SECRET` - Generate a secure random string
+   - `FRONTEND_URL` - Your frontend URL
+   - `NODE_ENV=production`
+
+**Frontend:**
+1. New Web Service → Connect your repo
+2. Build Command: `cd frontend && npm install && npm run build`
+3. Start Command: `cd frontend && npm start`
+4. Add environment variables:
+   - `NEXT_PUBLIC_API_URL` - Your backend URL
+
+### Database Setup
+
+Use a MySQL provider like:
+- [Aiven](https://aiven.io)
+- [PlanetScale](https://planetscale.com)
+- [Railway](https://railway.app)
+
+After deployment, run:
+```bash
+npx prisma db push
+```
+
 ## License
 
 MIT
