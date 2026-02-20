@@ -1,0 +1,48 @@
+// This is your Prisma schema file
+// Documentation: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// User table - stores customer information
+model KodUser {
+  uid              String   @id @default(uuid())
+  username         String   @unique @db.VarChar(100)
+  email            String   @unique @db.VarChar(255)
+  password         String   @db.VarChar(255)
+  balance          Decimal  @default(100000) @db.Decimal(15, 2)
+  phone            String   @db.VarChar(20)
+  role             String   @default("customer") @db.VarChar(50)
+  isEmailVerified  Boolean  @default(false)
+  emailVerifyToken String?  @db.VarChar(100)
+  resetToken       String?  @db.VarChar(100)
+  resetTokenExpiry DateTime?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  // Relations
+  tokens UserToken[]
+
+  @@map("KodUser")
+}
+
+// Token table - stores JWT tokens for authentication
+model UserToken {
+  tid     String   @id @default(uuid())
+  token   String   @unique @db.VarChar(500)
+  uid     String
+  expiry  DateTime
+  createdAt DateTime @default(now())
+
+  // Relations
+  user KodUser @relation(fields: [uid], references: [uid], onDelete: Cascade)
+
+  @@index([uid])
+  @@map("UserToken")
+}

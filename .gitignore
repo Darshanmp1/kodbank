@@ -1,0 +1,44 @@
+# Environment variables - DO NOT COMMIT
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+backend/.env
+frontend/.env.local
+**/.env
+**/.env.local
+
+# Node modules
+node_modules/
+
+# Build outputs
+backend/dist/
+frontend/.next/
+frontend/out/
+
+# Database
+backend/prisma/migrations/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+
+# Misc
+.cache/
+.temp/
+*.tmp
